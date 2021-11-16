@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap');
+
+img {
+    border-radius: 50%;
+    height: 100px;
+}
+
+.content {
+    position: absolute;
+    top:25%;
+    left:25%;
+  }
+
+.person {
+    background-color: #734D2C;
+    padding: 10px;
+}
+
+#detailsButton {
+    height: 30px;
+    width: 60px;
+    border: none;
+    font-family: 'Cinzel Decorative', cursive;
+    background-color: #D97941;
+    color: #000;
+}
+
+#modifyButton {
+    height: 30px;
+    width: 60px;
+    border: none;
+    font-family: 'Cinzel Decorative', cursive;
+    background-color: #D97941;
+    color: #000;
+}
