@@ -5,6 +5,17 @@ img {
     height: 100px;
 }
 
+tr {
+    margin-bottom: 10px;
+}
+
+input[type=text], input[type=number] {
+    border: none;
+    height: 30px;
+    width: 100px;
+    font-family: 'Cinzel Decorative', cursive;
+}
+
 .content {
     position: absolute;
     top:25%;
@@ -18,18 +29,31 @@ img {
 
 #detailsButton {
     height: 30px;
-    width: 60px;
+    width: 80px;
     border: none;
     font-family: 'Cinzel Decorative', cursive;
-    background-color: #D97941;
+    background-color: #D9C541;
     color: #000;
+    font-weight: bold;
 }
+
+#detailsButton:hover {
+    background-color: #000;
+    color: #D9C541;
+}
+
 
 #modifyButton {
     height: 30px;
-    width: 60px;
+    width: 80px;
     border: none;
     font-family: 'Cinzel Decorative', cursive;
     background-color: #D97941;
     color: #000;
+    font-weight: bold;
+}
+
+#modifyButton:hover {
+    background-color: #000;
+    color: #D97941;
 }

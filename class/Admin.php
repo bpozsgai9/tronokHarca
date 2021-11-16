@@ -29,11 +29,13 @@ class Admin {
         $sql = "SELECT * FROM person";
         $result = $this->conn->query($sql);
 
+        echo "<table>";
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
                 
-                echo "<form type='post' action=''>";
+                echo "<tr><td>";
                 echo "<div class='person'>";
+                echo "<form type='post' action=''>";
                 echo "<img src='img/" . $row["picture"]. "'>";
                 echo "<input type='text' name='name' value='" . $row["name"] . "'>";
                 echo "<input type='number' name='name' value='" .  $row["age"] . "'>";
@@ -41,12 +43,15 @@ class Admin {
                 echo "<input type='text' name='name' value='" . $row["House.name"]. "'>";
                 echo "<input type='submit' value='Details' name='details' id='detailsButton'>";
                 echo "<input type='submit' value='Modify' name='modify' id='modifyButton'>";
-                echo "</div>";
                 echo "</form>";
+                echo "</div>";
+                echo "<td><tr>";
             }
-          } else {
+        } else {
             echo "0 results";
-          }
+        }
+        echo "</table>";
+                
     }
 }
 ?>
