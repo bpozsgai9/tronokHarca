@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap');
 
 body {
-    background-image: url('../img/got.gif');
+    background-image: url('../img/got.gi');
     background-size: cover;
     background-attachment: fixed;
     font-family: 'Cinzel Decorative', cursive;
@@ -35,6 +35,7 @@ input[type=text], input[type=number] {
   }
 
 .person {
+    display: inline-block;
     background-color: #734D2C;
     padding: 10px;
     margin-bottom: 30px;
