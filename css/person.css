@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap');
 
 body {
-    background-image: url('../img/got.gif_');
+    background-image: url('../img/got.gif');
     background-size: cover;
+    background-attachment: fixed;
     font-family: 'Cinzel Decorative', cursive;
     color: #fff;
 }

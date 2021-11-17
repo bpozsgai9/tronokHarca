@@ -1,16 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap');
 
 body {
+    background-image: url('../img/got.gif');
+    background-size: cover;
+    background-attachment: fixed;
     font-family: 'Cinzel Decorative', cursive;
+}
+
+h1 {
+    color: #D9C541;
+    text-shadow: 3px 3px #000;
 }
 
 img {
     border-radius: 50%;
     height: 100px;
-}
-
-tr {
-    margin-bottom: 10px;
 }
 
 input[type=text], input[type=number] {
@@ -33,6 +37,7 @@ input[type=text], input[type=number] {
 .person {
     background-color: #734D2C;
     padding: 10px;
+    margin-bottom: 30px;
 }
 
 #detailsButton {
@@ -64,4 +69,15 @@ input[type=text], input[type=number] {
 #modifyButton:hover {
     background-color: #000;
     color: #D97941;
+}
+
+#treeButton {
+    height: 30px;
+    width: 100px;
+    border: none;
+    font-family: 'Cinzel Decorative', cursive;
+    background-color: #D97941;
+    color: #000;
+    font-weight: bold;
+
 }

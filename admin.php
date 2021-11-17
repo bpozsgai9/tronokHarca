@@ -9,10 +9,12 @@ if (isset($_POST["details"])) {
 }
 if (isset($_POST["modify"])) {
     echo "aaaaa";
-} else {
-    echo "Hiba!";
 }
 
+if (isset($_POST["familyTree"])) {
+    $url = "familyTree.php";
+    header("Location: $url");
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +29,9 @@ if (isset($_POST["modify"])) {
 <body>
     <div class="title">
         <h1>Game Of Thrones</h1>
+        <form method="post">
+            <input type="submit" name="familyTree" value="Family Tree" id="treeButton">
+        </form>
     </div>
     <div class="content">
         <?php

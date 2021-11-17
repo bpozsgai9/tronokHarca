@@ -1,5 +1,8 @@
 <?php
-
+if (isset($_POST['back'])) {
+    $url = "admin.php";
+    header("Location: $url");
+}
 ?>
 
 <!DOCTYPE html>
@@ -9,7 +12,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/person.css">
     <title>Game Of Thrones</title>
 </head>
 <body>
@@ -31,7 +34,9 @@
                             " House name: " . $personData["House_name"];
                     ?>
                 </p>
-                <input type="submit" value="Back" name="back">
+                <form method="POST">
+                    <input type="submit" value="Back" name="back">
+                </form>
             </div>
         </div> 
     </div>
