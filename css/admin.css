@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap');
 
+body {
+    font-family: 'Cinzel Decorative', cursive;
+}
+
 img {
     border-radius: 50%;
     height: 100px;
@@ -16,10 +20,14 @@ input[type=text], input[type=number] {
     font-family: 'Cinzel Decorative', cursive;
 }
 
+.title {
+    text-align: center;
+    font-size: 50px;
+}
+
 .content {
     position: absolute;
-    top:25%;
-    left:25%;
+    left: 30%;
   }
 
 .person {
