@@ -28,6 +28,15 @@ input[type=submit]:hover {
   color: #F2BF91;
 }
 
+dl, dt {
+  font-size: 15px;
+}
+
+dt {
+  color: red;
+  font-weight: bold;
+}
+
 .content {
   position: absolute;
   top:25%;
@@ -47,4 +56,19 @@ input[type=submit]:hover {
   background-color:#000;
   flex-grow: 1;
   padding-left: 20px;
+}
+
+.inline {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  margin-top: 20px;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+#house_picture{
+  filter: grayscale(0%);
+  width: 25px;
+  height: auto;
+  margin-left: 10px;
 }
