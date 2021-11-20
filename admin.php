@@ -1,32 +1,50 @@
 <?php
 $admin = new Admin();
 
+//controller
 if (isset($_POST["details"])) {
     
     $userId = $_POST['detailsId'];
     $url = "person.php?userId=$userId";
     header("Location: $url");
-
 }
+
+if (isset($_POST["familyTree"])) {
+    
+    $url = "familyTree.php";
+    header("Location: $url");
+}
+
 if (isset($_POST["modify"])) {
-    echo "aaaaa";
+    
+    $admin->modifyPerson(
+        $_POST['modifyId'], 
+        $_POST['modifyName'], 
+        $_POST['modifyAge'], 
+        $_POST['modifyTitle'], 
+        $_POST['modifyHouse_name']
+    );
 }
 
-if (isset($_POST["create"])) {
+if (isset($_POST["delete"])) {
+
+    $admin->deletePerson($_POST['deleteId']);
+}
+
+if (isset($_POST["create"]) && !empty($_FILES["fileToUpload"]["name"])) {
+    
     $admin->insertPerson(
         $_POST['name'], 
         $_POST['age'], 
         $_POST['title'], 
-        $_POST['House_name']
+        $_POST['House_name'],
+        $_FILES["fileToUpload"]["name"]
     );
-}
-
-if (isset($_POST["familyTree"])) {
-    $url = "familyTree.php";
-    header("Location: $url");
+    $admin->uploadFile();
 }
 ?>
 
+<!--view-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,36 +56,33 @@ if (isset($_POST["familyTree"])) {
 </head>
 <body>
     <div class="title">
-        <h1>Game Of Thrones</h1>
+        Game Of Thrones
         <form method="post">
+            <img src="img/tree.png" id="tree">
             <input type="submit" name="familyTree" value="Family Tree" id="treeButton">
         </form>
     </div>
     <div class="content">
-        <div class='person'>
-            <!---<form method="POST"  action="<?php echo $_SERVER['PHP_SELF']; ?>"enctype="multipart/form-data">
-                    <input type="file" name="fileToUpload" id="fileToUpload">
-                    <input type="submit" value="Feltölt" name="submit"><br>
-                </form>-->
-                <?php/*
-                    
-
-                    //bef
-                    if (!empty($_POST["submit"]) && isset($_POST["submit"])) {
-    
-                        $admin->uploadFile();
-                    }*/
-                ?>
-            <form method='POST' action=<?php $_SERVER['PHP_SELF'] ?>>
-                New Person:
-                <img src=''>
-                <input type='text' name='name' value='' placeholder='Name'>
-                <input type='number' name='age' value='' placeholder='Age'>
-                <input type='text' name='title' value='' placeholder='Title'>
-                <input type='text' name='House_name' value='' placeholder='House Name'>
-                <input type='submit' value='Create' name='create' id='createButton'>
-            </form>
-        </div>
+        <table>
+            New Person:<br />
+            <tr>
+                <form method='POST' action="<?php $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
+                <td>
+                    <input type="file" name="fileToUpload" id="fileToUpload" required>
+                </td>
+                <td>
+                    <input type='text' name='name' value='' placeholder='Name' required>
+                    <input type='number' name='age' value='' placeholder='Age' required>
+                    <input type='text' name='title' value='' placeholder='Title' required>
+                    <input type='text' name='House_name' value='' placeholder='House Name' required>
+                </td>
+                <td>
+                    <input type='submit' value='Create' name='create' id='createButton'>
+                </td>
+                </form>
+            </tr>
+        </table>
+        <br />
         <?php
             $admin->listPersonData();
         ?>
@@ -76,6 +91,8 @@ if (isset($_POST["familyTree"])) {
 </html>
 
 <?php
+
+//model
 class Admin {
 
 	private $servername = "localhost";
@@ -110,23 +127,33 @@ class Admin {
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
                 
-                echo "<tr><td>";
-                    echo "<div class='person'>";
+                echo "<tr>";
+                    echo "<td>";
+                        echo "<img src='img/" . $row["picture"]. "'>";
+                    echo "</td>";
+                    echo "<td>";
                         echo "<form method='POST' action='". $_SERVER['PHP_SELF'] ."'>";
-                            echo "<img src='img/" . $row["picture"]. "'>";
-                            echo "<input type='text' name='name' value='" . $row["name"] . "'>";
-                            echo "<input type='number' name='age' value='" .  $row["age"] . "'>";
-                            echo "<input type='text' name='title' value='" . $row["title"]. "'>";
-                            echo "<input type='text' name='House_name' value='" . $row["House_name"]. "'>";
+                            echo "<input type='text' name='modifyName' value='" . $row["name"] . "'>";
+                            echo "<input type='number' name='modifyAge' value='" .  $row["age"] . "'>";
+                            echo "<input type='text' name='modifyTitle' value='" . $row["title"]. "'>";
+                            echo "<input type='text' name='modifyHouse_name' value='" . $row["House_name"]. "'>";
                             echo "<input type='hidden' name='modifyId' value='" . $row['id'] ."'>";
                             echo "<input type='submit' value='Modify' name='modify' id='modifyButton'>";
                         echo "</form>";
+                    echo "</td>";
+                    echo "<td>";
                         echo "<form method='POST' action='". $_SERVER['PHP_SELF'] ."'>";
                             echo "<input type='hidden' name='detailsId' value='" . $row['id'] ."'>";
                             echo "<input type='submit' value='Details' name='details' id='detailsButton'>";
                         echo "</form>";
-                    echo "</div>";
-                echo "</td></tr>";
+                    echo "</td>";
+                    echo "<td>";
+                        echo "<form method='POST' action='". $_SERVER['PHP_SELF'] ."'>";
+                            echo "<input type='hidden' name='deleteId' value='" . $row['id'] ."'>";
+                            echo "<input type='submit' value='Delete' name='delete' id='deleteButton'>";
+                        echo "</form>";
+                    echo "</td>";
+                echo "</tr>";
             }
         } else {
             echo "0 results";
@@ -136,14 +163,14 @@ class Admin {
 
     public function uploadFile() {
 
-        $target_dir = "img/upload/";
+        $target_dir = "img/";
         $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
         $uploadOk = 1;
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-        
-        $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);    
-        if($check !== false) {
+        $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+
+        if ($check !== false) {
                 
             $uploadOk = 1;
 
@@ -161,7 +188,8 @@ class Admin {
         
             if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
 
-                echo "<div style='z-index: -1'>" . basename( $_FILES["fileToUpload"]["name"]) . " fel lett töltve! Köszönjük a képet!</div>";    
+                echo "<div style='z-index: -1'>" . basename( $_FILES["fileToUpload"]["name"]) . " fel lett töltve! Köszönjük a képet!</div>";
+
             } else {
                 
                 echo "Hiba: Feltöltés közben hiba lépett fel!";
@@ -171,17 +199,55 @@ class Admin {
 
     public function insertPerson($name, $age, $title, $House_name, $picture="unknown.PNG") {
         
-        $sql = "INSERT INTO person (name, age, title, House_name, picture) 
-        VALUES ($name, $age, $title, $House_name, $picture)";
+        $sql = "INSERT INTO person (`name`, `age`, `title`, `House_name`, `picture`)
+        VALUES 
+            ('" . $name . "', " . 
+                $age. ", '" . 
+                $title . "', '" . 
+                $House_name . "', '" . 
+                $picture . "')";
 
-        if ($conn->query($sql) === TRUE) {
+        if ($this->conn->query($sql) === TRUE) {
+
+            
             echo "New record created successfully";
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+
+            echo "Error: " . $sql . "<br>" . $this->conn->error;
+        }
+    }
+
+    public function deletePerson($id) {
+        
+        $sql = "DELETE FROM person WHERE id = $id";
+
+        if ($this->conn->query($sql) === TRUE) {
+
+            echo "Record deleted successfully";
+
+        } else {
+
+            echo "Error deleting record: " . $this->conn->error;
+        }
+    }
+
+    public function modifyPerson($id, $name, $age, $title, $House_name) {
+
+        $sql = "UPDATE person SET 
+            `name` = '". $name ."', 
+            `age` = '". $age ."', 
+            `title` = '". $title ."', 
+            `House_name` = '". $House_name ."'
+            WHERE id = " . $id;
+
+        if ($this->conn->query($sql) === TRUE) {
+
+            echo "Record updated successfully";
+
+        } else {
+
+            echo "Error updating record: " . $this->conn->error;
         }
     }
 }
-
-
-
 ?>

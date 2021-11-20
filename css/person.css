@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap');
 
 body {
-    background-image: url('../img/got.gi');
+    background-image: url('../img/got.gif');
     background-size: cover;
     background-attachment: fixed;
     font-family: 'Cinzel Decorative', cursive;
@@ -40,11 +40,11 @@ input[type=submit]:hover {
   width: 600px;
 }
 .fixed {
-  background-color:#F2BF91;
+  background-color:#000;
   
 }
 .flex-item {
-  background-color:#D97941;
+  background-color:#000;
   flex-grow: 1;
   padding-left: 20px;
 }
