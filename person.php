@@ -1,4 +1,6 @@
 <?php
+define("NUMBER_OF_CHARACTERS_IN_GOT", 38);
+
 if (isset($_POST['back'])) {
     $url = "admin.php";
     header("Location: $url");
@@ -18,8 +20,27 @@ if (isset($_POST['back'])) {
 <body>
     <?php
         $person = new Person();
-        $personData = $person->getPersonDataById($_GET["userId"]);
-        $parentArray = $person->getParentDataById($_GET["userId"]);
+        var_dump($_POST["detailsId"]);
+        if ($_POST["detailsId"] < NUMBER_OF_CHARACTERS_IN_GOT) {
+
+            $personData = $person->getPersonDataById($_POST["detailsId"]);
+            $parentArray = $person->getParentDataById($_POST["detailsId"]);
+
+        } else {
+
+            $personData = array(
+                "person_name" => $_POST["detailsName"],
+                "person_age" => $_POST["detailsAge"],
+                "person_title" => $_POST["detailsTitle"],
+                "person_picture" => $_POST["detailsPic"],
+                "house_name" => "Unknown",
+                "house_symbol" => "Unknown",
+                "house_picture" => "unknown.PNG"
+            );
+            $parentArray= array("Unknown");
+
+        }
+
     ?>
     <div class="content">
         <div class="container">

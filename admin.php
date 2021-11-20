@@ -1,12 +1,8 @@
 <?php
 $admin = new Admin();
 
-//controller
 if (isset($_POST["details"])) {
-    
-    $userId = $_POST['detailsId'];
-    $url = "person.php?userId=$userId";
-    header("Location: $url");
+    header("Location: person.php");
 }
 
 if (isset($_POST["familyTree"])) {
@@ -21,8 +17,7 @@ if (isset($_POST["modify"])) {
         $_POST['modifyId'], 
         $_POST['modifyName'], 
         $_POST['modifyAge'], 
-        $_POST['modifyTitle'], 
-        $_POST['modifyHouse_name']
+        $_POST['modifyTitle']
     );
 }
 
@@ -37,14 +32,12 @@ if (isset($_POST["create"]) && !empty($_FILES["fileToUpload"]["name"])) {
         $_POST['name'], 
         $_POST['age'], 
         $_POST['title'], 
-        $_POST['House_name'],
         $_FILES["fileToUpload"]["name"]
     );
     $admin->uploadFile();
 }
 ?>
 
-<!--view-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,7 +67,6 @@ if (isset($_POST["create"]) && !empty($_FILES["fileToUpload"]["name"])) {
                     <input type='text' name='name' value='' placeholder='Name' required>
                     <input type='number' name='age' value='' placeholder='Age' required>
                     <input type='text' name='title' value='' placeholder='Title' required>
-                    <input type='text' name='House_name' value='' placeholder='House Name' required>
                 </td>
                 <td>
                     <input type='submit' value='Create' name='create' id='createButton'>
@@ -92,7 +84,6 @@ if (isset($_POST["create"]) && !empty($_FILES["fileToUpload"]["name"])) {
 
 <?php
 
-//model
 class Admin {
 
 	private $servername = "localhost";
@@ -129,21 +120,24 @@ class Admin {
                 
                 echo "<tr>";
                     echo "<td>";
-                        echo "<img src='img/" . $row["picture"]. "'>";
+                        echo "<img src='img/" . $row["picture"] . "'>";
                     echo "</td>";
                     echo "<td>";
                         echo "<form method='POST' action='". $_SERVER['PHP_SELF'] ."'>";
                             echo "<input type='text' name='modifyName' value='" . $row["name"] . "'>";
                             echo "<input type='number' name='modifyAge' value='" .  $row["age"] . "'>";
                             echo "<input type='text' name='modifyTitle' value='" . $row["title"]. "'>";
-                            echo "<input type='text' name='modifyHouse_name' value='" . $row["House_name"]. "'>";
                             echo "<input type='hidden' name='modifyId' value='" . $row['id'] ."'>";
                             echo "<input type='submit' value='Modify' name='modify' id='modifyButton'>";
                         echo "</form>";
                     echo "</td>";
                     echo "<td>";
-                        echo "<form method='POST' action='". $_SERVER['PHP_SELF'] ."'>";
+                        echo "<form method='POST' action='person.php'>";
                             echo "<input type='hidden' name='detailsId' value='" . $row['id'] ."'>";
+                            echo "<input type='hidden' name='detailsName' value='" . $row['name'] ."'>";
+                            echo "<input type='hidden' name='detailsAge' value='" . $row['age'] ."'>";
+                            echo "<input type='hidden' name='detailsTitle' value='" . $row['title'] ."'>";
+                            echo "<input type='hidden' name='detailsPic' value='" . $row["picture"] ."'>";
                             echo "<input type='submit' value='Details' name='details' id='detailsButton'>";
                         echo "</form>";
                     echo "</td>";
@@ -197,14 +191,13 @@ class Admin {
         }
     }
 
-    public function insertPerson($name, $age, $title, $House_name, $picture="unknown.PNG") {
+    public function insertPerson($name, $age, $title, $picture="unknown.PNG") {
         
-        $sql = "INSERT INTO person (`name`, `age`, `title`, `House_name`, `picture`)
+        $sql = "INSERT INTO person (`name`, `age`, `title`, `picture`)
         VALUES 
             ('" . $name . "', " . 
                 $age. ", '" . 
                 $title . "', '" . 
-                $House_name . "', '" . 
                 $picture . "')";
 
         if ($this->conn->query($sql) === TRUE) {
@@ -231,13 +224,12 @@ class Admin {
         }
     }
 
-    public function modifyPerson($id, $name, $age, $title, $House_name) {
+    public function modifyPerson($id, $name, $age, $title) {
 
         $sql = "UPDATE person SET 
             `name` = '". $name ."', 
             `age` = '". $age ."', 
-            `title` = '". $title ."', 
-            `House_name` = '". $House_name ."'
+            `title` = '". $title ."'
             WHERE id = " . $id;
 
         if ($this->conn->query($sql) === TRUE) {
