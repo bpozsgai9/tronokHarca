@@ -1,3 +1,12 @@
+<?php
+
+if (isset($_POST['back'])) {
+    $url = "admin.php";
+    header("Location: $url");
+}
+
+$house = new House();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,13 +16,16 @@
     <title>Document</title>
     <link rel="stylesheet" href="css/house.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
     <div class="content">
-    <?php
-        $house = new House();
-        $house->listHouseData();
-    ?>
+        <form method="POST">
+            <input type="submit" value="Back" name="back" id="backButton">
+        </form>
+        <div class="tableBorder">
+            <?php $house->listHouseData(); ?>
+        </div>
     </div>
     <script>
         function transposeTable() {
@@ -70,16 +82,34 @@ class House {
         $sql = "SELECT * FROM house";
 
         $result = $this->conn->query($sql);
+        $chanceAtWinAWar = self::chanceAtWinAWar();
 
         echo "<table>";
+        echo "<tr>";
+        echo "<td>Name:</td>";
+        echo "<td></td>";
+        echo "<td>Symbol:</td>";
+        echo "<td>Number Of Soldiers:</td>";
+        echo "<td style='vertical-align: top; border-top: 3px solid black;'>Chance To Win War:</td>";
+        echo "</tr>";
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
+                
                 echo "<tr>";
                     echo "<td class='title'>" . $row['name'] . "</td>";
                     echo "<td><img src='img/" . $row['picture'] . "' alt='house_pic' title='house_pic'></td>";
                     echo "<td>" . $row['symbol'] . "</td>";
                     echo "<td>" . $row['number_of_soldiers'] . "</td>";
+                    echo "<td style='
+                        border-top: 3px solid black; 
+                        vertical-align: top;'>";
+                    echo "<div style=
+                        'height:". round($chanceAtWinAWar[$row['name']]) * 10 ."px; 
+                        background-color: #D9C541;
+                        color: black'>" . $chanceAtWinAWar[$row['name']] . "%</div>";
+                    echo "</td>";
                 echo "</tr>";
+                
             }
         } else {
             echo "0 results";
@@ -87,6 +117,50 @@ class House {
         echo "</table>";
     }
 
+    public static function listEnemiesById($id) {
+
+        $sql = "SELECT `name` AS enemy_house_name
+                    FROM house
+                    WHERE `id`IN (SELECT `with_who_ House_id` 
+                        FROM `fights_with` 
+                        WHERE who_House_id = $id)";
+        
+        $result = $this->conn->query($sql);
+            
+        $array = array();
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                array_push($array, $row['enemy_house_name']);
+            }
+        } else {
+            array_push($array, "Unknown");
+            return $array;
+        }
+        return $array;
+    }
+
+    public function chanceAtWinAWar() {
+
+        $sql = "SELECT 
+            `name`, 
+            (number_of_soldiers / (SELECT SUM(number_of_soldiers) FROM house) * 100) AS percent 
+            FROM house 
+            GROUP BY id";
+
+            $result = $this->conn->query($sql);
+
+            $array = [];
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+
+                    $array += array($row["name"] => $row["percent"]);
+                }
+            } else {
+                echo "0 results";
+            }
+            return $array;
+        
+    }
 }
 ?>
 

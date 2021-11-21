@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap');
 
 body {
-    background-image: url('../img/got.gi');
+    background-image: url('../img/got.gif');
     background-size: cover;
     background-attachment: fixed;
     font-family: 'Cinzel Decorative', cursive;
@@ -9,16 +9,17 @@ body {
 
 table, tr, td {
     border-collapse: collapse;
+    background-color: #D97941;
 }
+
 
 td {
     text-align: center;
-    padding: 10px;
-    color: red;
+    color: black;
+    width: 200px;
 }
 
 .title {
-    font-size: 30px;
     font-weight: bold;
 }
 
@@ -28,4 +29,25 @@ td {
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+}
+
+.tableBorder {
+    padding: 20px;
+    background-color: #D97941;
+}
+
+#backButton {
+    height: 30px;
+    width: 100px;
+    border: none;
+    font-family: 'Cinzel Decorative', cursive;
+    background-color: #D97941;
+    color: #000;
+    font-weight: bold;
+
+}
+
+#backButton:hover {
+    background-color: #000;
+    color: #D97941;
 }
