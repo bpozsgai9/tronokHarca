@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap');
+
+body {
+    background-image: url('../img/got.gi');
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'Cinzel Decorative', cursive;
+}
+
+table, tr, td {
+    border-collapse: collapse;
+}
+
+td {
+    text-align: center;
+    padding: 10px;
+    color: red;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.content {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}

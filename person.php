@@ -20,11 +20,12 @@ if (isset($_POST['back'])) {
 <body>
     <?php
         $person = new Person();
-        var_dump($_POST["detailsId"]);
         if ($_POST["detailsId"] < NUMBER_OF_CHARACTERS_IN_GOT) {
 
             $personData = $person->getPersonDataById($_POST["detailsId"]);
             $parentArray = $person->getParentDataById($_POST["detailsId"]);
+            $kills = (int)($person->getKillNumberById($_POST["detailsId"])["number_of_kills"]);
+            echo $kills;
 
         } else {
 
@@ -37,7 +38,8 @@ if (isset($_POST['back'])) {
                 "house_symbol" => "Unknown",
                 "house_picture" => "unknown.PNG"
             );
-            $parentArray= array("Unknown");
+            $parentArray = array("Unknown");
+            $kills = 0;
 
         }
 
@@ -52,7 +54,11 @@ if (isset($_POST['back'])) {
                     <div><?php echo $personData["person_name"] ?></div>
                     <img src="<?php echo "img/" . $personData["house_picture"] ?>" id="house_picture">
                 </div>
+                <br />
                     <?php 
+                        for ($i = 0; $i < $kills; $i++) {
+                            echo "💀";
+                        }
                         echo "<dl>";
                             echo "<dt>Age:</dt>";
                             echo "<dd>" . $personData["person_age"] .  "</dd>";
@@ -120,7 +126,7 @@ class Person {
             house.name AS house_name, 
             house.symbol AS house_symbol, 
             house.picture AS house_picture
-                FROM person, house , member_of_house
+                FROM person, house, member_of_house
                 WHERE 
                     person.id = member_of_house.Person_id AND
                     member_of_house.House_id = house.id AND
@@ -139,6 +145,7 @@ class Person {
     }
 
     public function getParentDataById($id) {
+
         $sql = "SELECT name AS parent_name
                 FROM person
                 WHERE id IN (SELECT parent_Person_id
@@ -157,6 +164,22 @@ class Person {
                 return $array;
             }
             return $array;
+    }
+
+    public function getKillNumberById($id) {
+
+        $sql = "SELECT COUNT(*) AS number_of_kills FROM killed_by WHERE by_who_Person_id =" . $id;
+
+        $result = $this->conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+              return $row;
+            }
+          } else {
+            echo "0 results";
+          }
+        
     }
 }
 ?>

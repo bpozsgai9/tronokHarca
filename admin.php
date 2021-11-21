@@ -5,9 +5,9 @@ if (isset($_POST["details"])) {
     header("Location: person.php");
 }
 
-if (isset($_POST["familyTree"])) {
+if (isset($_POST["houseButton"])) {
     
-    $url = "familyTree.php";
+    $url = "house.php";
     header("Location: $url");
 }
 
@@ -52,7 +52,7 @@ if (isset($_POST["create"]) && !empty($_FILES["fileToUpload"]["name"])) {
         Game Of Thrones
         <form method="post">
             <img src="img/tree.png" id="tree">
-            <input type="submit" name="familyTree" value="Family Tree" id="treeButton">
+            <input type="submit" name="houseButton" value="Houses" id="houseButton">
         </form>
     </div>
     <div class="content">

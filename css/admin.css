@@ -55,7 +55,7 @@ table, tr, td {
 
 .content {
     position: absolute;
-    left: 20%;
+    left: 25%;
 }
 
 #detailsButton {
@@ -120,7 +120,7 @@ table, tr, td {
     color: #41d992;
 }
 
-#treeButton {
+#houseButton {
     height: 30px;
     width: 100px;
     border: none;
@@ -131,7 +131,7 @@ table, tr, td {
 
 }
 
-#treeButton:hover {
+#houseButton:hover {
     background-color: #000;
     color: #D97941;
 }
