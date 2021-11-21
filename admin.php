@@ -57,7 +57,7 @@ if (isset($_POST["create"]) && !empty($_FILES["fileToUpload"]["name"])) {
     </div>
     <div class="content">
         <table>
-            New Person:<br />
+            <div class="newPerson">New Person:</div>
             <tr>
                 <form method='POST' action="<?php $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
                 <td>
