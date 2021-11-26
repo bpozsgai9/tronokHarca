@@ -16,7 +16,6 @@ $house = new House();
     <title>Document</title>
     <link rel="stylesheet" href="css/house.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
     <div class="content">
@@ -168,11 +167,6 @@ class House {
         
     }
 
-    public function FunctionName(Type $var = null)
-    {
-        # code...
-    }
-
     function getAverageAgeGroupByHouse() {
         
         $sql = "SELECT house.name AS house_name,
@@ -200,7 +194,7 @@ class House {
     function getAverageAgeUnder18GroupByHouse() {
 
         $sql = "SELECT house.name AS house_name,
-                    SUM(person.age) / COUNT(person.age < 18) AS rate_of_underage_persons_in_family
+                    SUM(person.age < 18) / COUNT(person.age < 18) AS rate_of_underage_persons_in_family
                 FROM person, house, member_of_house
                 WHERE 
                     person.id = member_of_house.Person_id AND
