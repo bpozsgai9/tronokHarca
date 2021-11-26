@@ -1,7 +1,7 @@
 <?php
 
 if (isset($_POST['back'])) {
-    $url = "admin.php";
+    $url = "index.php";
     header("Location: $url");
 }
 
@@ -83,6 +83,8 @@ class House {
 
         $result = $this->conn->query($sql);
         $chanceAtWinAWar = self::chanceAtWinAWar();
+        $avrageAgeGroupByHouse = self::getAverageAgeGroupByHouse();
+        $avrageAgeUnder18GroupByHouse = self::getAverageAgeUnder18GroupByHouse();
 
         echo "<table>";
         echo "<tr>";
@@ -90,6 +92,8 @@ class House {
         echo "<td></td>";
         echo "<td>Symbol:</td>";
         echo "<td>Number Of Soldiers:</td>";
+        echo "<td>Average Age In House:</td>";
+        echo "<td>Persent Of Underage Persons:</td>";
         echo "<td style='vertical-align: top; border-top: 3px solid black;'>Chance To Win War:</td>";
         echo "</tr>";
         if ($result->num_rows > 0) {
@@ -100,6 +104,8 @@ class House {
                     echo "<td><img src='img/" . $row['picture'] . "' alt='house_pic' title='house_pic'></td>";
                     echo "<td>" . $row['symbol'] . "</td>";
                     echo "<td>" . $row['number_of_soldiers'] . "</td>";
+                    echo "<td>" . round($avrageAgeGroupByHouse[$row['name']]) . "</td>";
+                    echo "<td>" . round($avrageAgeUnder18GroupByHouse[$row['name']]) . "%</td>";
                     echo "<td style='
                         border-top: 3px solid black; 
                         vertical-align: top;'>";
@@ -160,6 +166,59 @@ class House {
             }
             return $array;
         
+    }
+
+    public function FunctionName(Type $var = null)
+    {
+        # code...
+    }
+
+    function getAverageAgeGroupByHouse() {
+        
+        $sql = "SELECT house.name AS house_name,
+                    SUM(person.age) / COUNT(person.age) AS average_age_in_house
+                FROM person, house, member_of_house
+                WHERE 
+                    person.id = member_of_house.Person_id AND
+                    member_of_house.House_id = house.id
+                GROUP BY house.name";
+
+        $result = $this->conn->query($sql);
+
+        $array = [];
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+
+                $array += array($row["house_name"] => $row["average_age_in_house"]);
+            }
+        } else {
+            echo "0 results";
+        }
+        return $array;
+    }
+
+    function getAverageAgeUnder18GroupByHouse() {
+
+        $sql = "SELECT house.name AS house_name,
+                    SUM(person.age) / COUNT(person.age < 18) AS rate_of_underage_persons_in_family
+                FROM person, house, member_of_house
+                WHERE 
+                    person.id = member_of_house.Person_id AND
+                    member_of_house.House_id = house.id
+                GROUP BY house.name";
+
+        $result = $this->conn->query($sql);
+
+        $array = [];
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+
+                $array += array($row["house_name"] => $row["rate_of_underage_persons_in_family"]);
+            }
+        } else {
+            echo "0 results";
+        }
+        return $array;
     }
 }
 ?>

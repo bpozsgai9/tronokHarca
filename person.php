@@ -2,7 +2,7 @@
 define("NUMBER_OF_CHARACTERS_IN_GOT", 38);
 
 if (isset($_POST['back'])) {
-    $url = "admin.php";
+    $url = "index.php";
     header("Location: $url");
 }
 ?>

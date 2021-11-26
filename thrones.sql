@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2021. Nov 21. 22:06
+-- Létrehozás ideje: 2021. Nov 26. 16:13
 -- Kiszolgáló verziója: 10.4.18-MariaDB
 -- PHP verzió: 8.0.3
 
@@ -157,7 +157,8 @@ INSERT INTO `member_of_house` (`id`, `Person_id`, `House_id`) VALUES
 (35, 35, 1),
 (36, 36, 1),
 (37, 37, 5),
-(38, 38, 8);
+(38, 38, 8),
+(39, 30, 2);
 
 -- --------------------------------------------------------
 
@@ -342,7 +343,7 @@ ALTER TABLE `killed_by`
 -- AUTO_INCREMENT a táblához `member_of_house`
 --
 ALTER TABLE `member_of_house`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT a táblához `parent`
